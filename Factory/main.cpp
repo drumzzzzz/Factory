@@ -53,7 +53,7 @@ Apple* Apple::make_apple(string choice) {
 }
 
 
-// main() is considered the "client"
+//  main() is considered the "client"
 // while in this example we could hard code the
 // derived classes since we are making a menu anyway
 // imagine having 
