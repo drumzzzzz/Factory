@@ -1,0 +1,1 @@
+run="clang++-7 -pthread -std=c++17 ./Factory/main.cpp -o ./Factory/Factory.exe && ./Factory/Factory.exe"

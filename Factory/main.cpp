@@ -11,20 +11,17 @@ public:
     // Static factory method
     static Subaru* make_subaru(const char* model);
 
-    // Methods used polymorphically per model
-
+    // Methods per model
     virtual void Model() = 0;
-	
     virtual void Engine() = 0;
-
     virtual void Transmission() = 0;
-
     virtual void Options() = 0;
 
     // Explicit default destructor
     virtual ~Subaru() = default;
 };
 
+// Factory Objects
 class Legacy : public Subaru {
 public:
     void Model()
@@ -34,17 +31,17 @@ public:
 	
     void Engine()
     {
-        cout << "iPhone: touchscreen\n";
+        cout << "3.0L F6\n";
     }
 
     void Transmission()
     {
-
+        cout << "CVT\n";
     }
 
     void Options()
     {
-
+        cout << "Heated seats\n";
     }
 };
 
@@ -62,7 +59,7 @@ public:
 
 	void Transmission()
     {
-        cout << "5MT\n";
+        cout << "MT 5 speed\n";
     }
 
 	void Options()
@@ -81,17 +78,17 @@ public:
 
     void Engine()
     {
-        cout << "iPhone: touchscreen\n";
+        cout << "SOHC 2.5L\n";
     }
 
     void Transmission()
     {
-
+        cout << "CVT\n";
     }
 
     void Options()
     {
-
+        cout << "Roof Rack, Towing Package\n";
     }
 };
 
@@ -104,24 +101,23 @@ public:
 	
     void Engine()
     {
-        cout << "iPhone: touchscreen\n";
+        cout << "DOHC 2.5L Turbo\n";
     }
 
     void Transmission()
     {
-
+        cout << "MT 6 speed\n";
     }
 
     void Options()
     {
-
+        cout << "Hood Scoop and Wing\n";
     }
 };
 
+// Factory Method: Returns a constructed object based on supplied model type
 Subaru* Subaru::make_subaru(const char* model)
-{
-    int v = strcmp(model, "legacy");
-	
+{	
     if (strcmp(model,"legacy") == 0)
         return new Legacy;
     else if (strcmp(model, "impreza") == 0)
@@ -134,27 +130,14 @@ Subaru* Subaru::make_subaru(const char* model)
     return nullptr;
 }
 
-const char* models[6] = { "legacy", "impreza", "outback", "wrx" };
-
-void ToLower(char* svalue)
+// Converts a string to lower case
+static void ToLower(char* svalue)
 {
     for (unsigned int i = 0; i < strlen(svalue); i++)
         svalue[i] = (char)tolower(svalue[i]);
 }
 
-char* CheckModel(char* model)
-{	
-    for (string m : models)
-    {
-        if (m == model)
-        {
-            return model;
-        }
-    }
-
-    return nullptr;
-}
-
+// Iterates and creates factory objects based on supplied arguments
 int main(int argc, char* argv[])
 {
     if (argc < 2)
@@ -164,13 +147,14 @@ int main(int argc, char* argv[])
     }
 
     vector<Subaru*> subarus;
-	
-	for (int idx=1; idx<argc;idx++)
+
+	// Create factory objects per valid argument
+	for (int idx=1; idx<argc; idx++)
 	{
         ToLower(argv[idx]);
-		
         Subaru* s = Subaru::make_subaru(argv[idx]);
-        if (s != nullptr)
+
+		if (s != nullptr)
         {
             subarus.push_back(s);
             cout << "Subaru Model " << argv[idx] << " Constructed." << endl;
@@ -179,8 +163,10 @@ int main(int argc, char* argv[])
             cout << "Skipping Invalid Model Name '" << argv[idx] << "'." << endl;	
 	}
 
-	for (unsigned int i=0; i<subarus.size();i++)
+	// Iterate the created object methods	
+	for (unsigned int i=0; i<subarus.size(); i++)
 	{
+        cout << "************" << endl;
         subarus[i]->Model();
         subarus[i]->Engine();
         subarus[i]->Transmission();
